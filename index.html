@@ -78,7 +78,7 @@ section .sub{color:var(--muted);max-width:720px;margin:0 0 24px}
 .card h3{font-size:20px;margin-bottom:6px}
 .card p{margin:0 0 10px;color:var(--muted);font-size:15px}
 svg.plan{width:100%;height:auto;display:block}
-svg.plan text{font:600 11px Inter;fill:var(--fg)}
+svg.plan text{font:600 14px Inter;fill:var(--fg)}
 svg.plan .dim{stroke:var(--acc);stroke-width:1.2;fill:none}
 svg.plan .dimt{fill:var(--acc)}
 svg.plan .piece{fill:var(--wood);stroke:var(--fg);stroke-width:1.4}
@@ -353,15 +353,15 @@ footer .brands{display:inline-flex;margin-bottom:12px}
   }
   // Lateral
   {
-    const s=document.getElementById('svgSide'), k=5.2, ox=46, oy=490;
-    s.setAttribute('viewBox','0 0 560 560');
+    const s=document.getElementById('svgSide'), k=5.2, ox=96, oy=480;
+    s.setAttribute('viewBox','0 0 640 530');
     const P=(u,y)=>`${ox+u*k},${oy-y*k}`;
     const X=u=>ox+u*k, Y=y=>oy-y*k;
     el(s,'line',{x1:X(FLAT),y1:Y(CY),x2:X(FLAT),y2:Y(BASE),class:'guide'});
     el(s,'line',{x1:X(FLAT),y1:Y(CY),x2:X(UE),y2:Y(H),class:'guide'});
     el(s,'circle',{cx:X(FLAT),cy:Y(CY),r:4,fill:'var(--acc)'});
     el(s,'text',{x:X(FLAT)+10,y:Y(CY)+4},'Centro del compás');
-    el(s,'text',{x:X(36),y:Y(60),class:'dimt'},'R = 2.08 m (6\' 10")');
+    el(s,'text',{x:X(40),y:Y(64),class:'dimt'},'R = 2.08 m (6\' 10")');
     el(s,'path',{d:profile(P),class:'piece'});
     // cotas
     const dimH=(u1,u2,y,label)=>{el(s,'path',{d:`M${X(u1)},${Y(y)} L${X(u2)},${Y(y)} M${X(u1)},${Y(y)-5} V${Y(y)+5} M${X(u2)},${Y(y)-5} V${Y(y)+5}`,class:'dim'});el(s,'text',{x:(X(u1)+X(u2))/2,y:Y(y)+17,'text-anchor':'middle',class:'dimt'},label)};
@@ -380,8 +380,8 @@ footer .brands{display:inline-flex;margin-bottom:12px}
     el(s,'rect',{x:ox,y:oy-48*k,width:96*k,height:48*k,class:'sheet'});
     el(s,'path',{d:profile(P),class:'piece'});
     el(s,'path',{d:profile(P2),class:'piece2'});
-    el(s,'text',{x:ox+20*k,y:oy-6*k},'Lateral A');
-    el(s,'text',{x:ox+64*k,y:oy-40*k},'Lateral B (girado)');
+    el(s,'text',{x:ox+58*k,y:oy-6*k},'Lateral A');
+    el(s,'text',{x:ox+12*k,y:oy-40*k,style:'fill:#fff'},'Lateral B (girado)');
     el(s,'text',{x:ox+48*k,y:oy+20,'text-anchor':'middle',class:'dimt'},'2.44 m (8\')');
   }
 })();
@@ -418,9 +418,10 @@ const controls=new OrbitControls(camera,renderer.domElement);
 controls.enableDamping=true;
 controls.maxPolarAngle=Math.PI*0.49;
 controls.minDistance=80; controls.maxDistance=900;
-function resetView(){camera.position.set(250,170,300);controls.target.set(0,22,0);controls.update()}
+function resetView(){camera.position.set(215,150,255);controls.target.set(0,22,0);controls.update()}
 resetView();
 
+scene.fog=new THREE.Fog(0,500,1100);
 scene.add(new THREE.HemisphereLight(0xffffff,0x8a7a66,1.1));
 const sun=new THREE.DirectionalLight(0xffffff,1.9);
 sun.position.set(160,300,220);
@@ -432,7 +433,7 @@ scene.add(sun);
 
 const ground=new THREE.Mesh(new THREE.CircleGeometry(900,64),new THREE.MeshStandardMaterial({roughness:1}));
 ground.rotation.x=-Math.PI/2; ground.receiveShadow=true; scene.add(ground);
-function applyTheme(){scene.background=new THREE.Color(css('--scene-bg'));ground.material.color.set(css('--ground'))}
+function applyTheme(){scene.background=new THREE.Color(css('--scene-bg'));scene.fog.color.set(css('--scene-bg'));ground.material.color.set(css('--ground'))}
 applyTheme();
 
 const MAT={
