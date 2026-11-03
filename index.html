@@ -93,6 +93,11 @@ td.n{font-family:"Bricolage Grotesque";font-weight:700;font-size:18px;white-spac
 td small{color:var(--muted)}
 .table-scroll{overflow-x:auto}
 
+.cost-total{background:var(--acc);border-color:var(--acc);color:var(--on-acc)}
+.cost-total small{opacity:.85;font-size:13px}
+.cost-total b{display:block;font:800 clamp(34px,5vw,48px)/1.1 "Bricolage Grotesque";margin:4px 0 10px}
+.cost-total p{color:inherit;opacity:.9}
+tfoot td{border-bottom:0;padding-top:14px}
 .tools-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
 .tools-list span{background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:14px}
 
@@ -125,7 +130,7 @@ footer .brands{display:inline-flex;margin-bottom:12px}
       <img src="assets/luuply.png" alt="luuply"><span class="x">×</span><img src="assets/marblism.png" alt="Marblism">
     </div>
     <nav class="links">
-      <a href="#modelo">Modelo 3D</a><a href="#plano">Plano</a><a href="#materiales">Materiales</a><a href="#pasos">Pasos</a>
+      <a href="#modelo">Modelo 3D</a><a href="#plano">Plano</a><a href="#materiales">Materiales</a><a href="#costos">Costos</a><a href="#pasos">Pasos</a>
     </nav>
     <button class="theme-btn" id="themeBtn" aria-label="Cambiar a modo oscuro">☾</button>
   </div>
@@ -184,17 +189,16 @@ footer .brands{display:inline-flex;margin-bottom:12px}
         <table>
           <thead><tr><th>Cant.</th><th>Material</th><th>Para qué</th></tr></thead>
           <tbody>
-            <tr><td class="n">47</td><td>Barrote 2x4 de 8' (2.44 m)<br><small>Medida real 3.8 × 8.9 cm</small></td><td>Largueros, fondo plano, plataforma y banca</td></tr>
+            <tr><td class="n">51</td><td>Barrote 2x4 de 8' (2.44 m)<br><small>Medida real 3.8 × 8.9 cm</small></td><td>Largueros, fondo plano, plataforma y bancas</td></tr>
             <tr><td class="n">2</td><td>Barrote 2x4 de 10' (3.05 m)</td><td>Diagonales de refuerzo</td></tr>
             <tr><td class="n">3</td><td>Triplay de 3/4" (19 mm), hoja 4' × 8'</td><td>4 laterales + 2 plataformas</td></tr>
             <tr><td class="n">6</td><td>Triplay de 3/8" (9 mm), hoja 4' × 8'</td><td>Primera capa de la superficie</td></tr>
-            <tr><td class="n">6</td><td>Masonite de 1/4" (6 mm), hoja 4' × 8'</td><td>Capa de rodamiento</td></tr>
-            <tr><td class="n">2</td><td>Polín 4x4 de 8'<br><small>Medida real 8.9 × 8.9 cm</small></td><td>4 postes de soporte</td></tr>
-            <tr><td class="n">2</td><td>Tabla 2x6 de 8'</td><td>Asiento de las bancas</td></tr>
-            <tr><td class="n">2</td><td>Tubo de acero negro de 1.5" (3.8 cm), 8' de largo</td><td>Coping</td></tr>
-            <tr><td class="n">~3 kg</td><td>Pijas para tablaroca de 2.5" (6.4 cm)</td><td>Estructura</td></tr>
-            <tr><td class="n">~400</td><td>Pijas de 1.25" (3.2 cm) de cabeza plana</td><td>Superficie (unas 50 por hoja de masonite)</td></tr>
-            <tr><td class="n">8</td><td>Tornillos de 1/4" × 3" con tuerca</td><td>Fijar el coping a la estructura</td></tr>
+            <tr><td class="n">6</td><td>Triplay de 6 mm, hoja 4' × 8'</td><td>Capa de rodamiento</td></tr>
+            <tr><td class="n">2</td><td>Polín de 8' (3 1/4" o 4x4)<br><small>El de 3 1/4" mide 8.3 × 8.3 cm</small></td><td>4 postes de soporte</td></tr>
+            <tr><td class="n">2</td><td>Tubo conduit de 1 1/4" (4.1 cm por fuera), 3 m</td><td>Coping (córtalo a 2.44 m)</td></tr>
+            <tr><td class="n">~400</td><td>Pijas para tablaroca de 2.5" (6.3 cm)</td><td>Estructura</td></tr>
+            <tr><td class="n">~500</td><td>Pijas para tablaroca de 1 5/8" (4.1 cm)</td><td>Superficie (unas 50 por hoja de 6 mm)</td></tr>
+            <tr><td class="n">8</td><td>Pijas de 3" (7.6 cm)</td><td>Fijar el coping a la estructura</td></tr>
           </tbody>
         </table>
       </div>
@@ -213,9 +217,50 @@ footer .brands{display:inline-flex;margin-bottom:12px}
             <tr><td class="n">4</td><td>2x4 a <b>2.36 m</b> / 57 cm<br><small>Trasero y viga central de cada plataforma (2 de cada uno)</small></td></tr>
             <tr><td class="n">4</td><td>4x4 a <b>1.12 m</b> (44")<br><small>Postes, dos salen de cada polín</small></td></tr>
             <tr><td class="n">2</td><td>Triplay 3/4" a <b>61 × 244 cm</b><br><small>Plataformas: una hoja cortada a la mitad</small></td></tr>
-            <tr><td class="n">4</td><td>Triplay 3/8" y masonite a <b>191 × 122 cm</b> (6' 3" × 4')<br><small>Superficie del fondo plano (2 de cada uno)</small></td></tr>
+            <tr><td class="n">4</td><td>Triplay 3/8" y de 6 mm a <b>191 × 122 cm</b> (6' 3" × 4')<br><small>Superficie del fondo plano (2 de cada uno)</small></td></tr>
           </tbody>
         </table>
+      </div>
+    </div>
+  </section>
+
+
+  <section id="costos">
+    <h2>Cuánto cuesta</h2>
+    <p class="sub">Todo se consigue en Home Depot México. Precios con IVA consultados en homedepot.com.mx el 3 de noviembre de 2026 (tienda Coapa del Hueso, CDMX). Cambian según la tienda y las promociones, así que tómalos como estimado.</p>
+    <div class="grid2">
+      <div class="card table-scroll">
+        <table>
+          <thead><tr><th>Cant.</th><th>Producto</th><th>Precio</th><th>Subtotal</th></tr></thead>
+          <tbody>
+<tr><td class="n">51</td><td><a href="https://www.homedepot.com.mx/p/madera-barrote-dimensionada-1-1-2-x-3-1-2-x-8-pies-para-construccion-603426" target="_blank" rel="noopener">Barrote 2x4 de 8'</a><br><small>SKU 603426 · Largueros, fondo plano, plataformas y asientos</small></td><td>$105</td><td><b>$5,355</b></td></tr>
+<tr><td class="n">2</td><td><a href="https://www.homedepot.com.mx/p/muva-tablon-de-madera-tratada-2-x-4-x-10-pies-105038-105038" target="_blank" rel="noopener">Tablón tratado 2x4 de 10'</a><br><small>SKU 105038 · Diagonales de refuerzo</small></td><td>$245</td><td><b>$490</b></td></tr>
+<tr><td class="n">3</td><td><a href="https://www.homedepot.com.mx/p/triplay-madera-de-pino-244-x-121-m-x-18-mm-192835" target="_blank" rel="noopener">Triplay de pino 18 mm, 1.22 × 2.44 m</a><br><small>SKU 192835 · Laterales y plataformas</small></td><td>$675</td><td><b>$2,025</b></td></tr>
+<tr><td class="n">6</td><td><a href="https://www.homedepot.com.mx/p/triplay-bc-122-x-244-m-9mm-araucoply-541728" target="_blank" rel="noopener">Triplay BC 9 mm, 1.22 × 2.44 m</a><br><small>SKU 541728 · Primera capa de superficie</small></td><td>$479</td><td><b>$2,874</b></td></tr>
+<tr><td class="n">6</td><td><a href="https://www.homedepot.com.mx/p/triplay-de-construccion-6-mm-122-x-244-m-539124-539124" target="_blank" rel="noopener">Triplay de construcción 6 mm, 1.22 × 2.44 m</a><br><small>SKU 539124 · Capa de rodamiento</small></td><td>$315</td><td><b>$1,890</b></td></tr>
+<tr><td class="n">2</td><td><a href="https://www.homedepot.com.mx/p/polin-de-madera-dimensionado-3-1-4-x-3-1-4-x-8-pies-para-cimbra-562394-562394" target="_blank" rel="noopener">Polín 3 1/4 × 3 1/4 de 8'</a><br><small>SKU 562394 · 4 postes de soporte</small></td><td>$179</td><td><b>$358</b></td></tr>
+<tr><td class="n">2</td><td><a href="https://www.homedepot.com.mx/p/rymco-tubo-conduit-de-1-1-4-de-pulgada-plata-704851-704851" target="_blank" rel="noopener">Tubo conduit 1 1/4" de 3 m</a><br><small>SKU 704851 · Coping</small></td><td>$469</td><td><b>$938</b></td></tr>
+<tr><td class="n">4</td><td><a href="https://www.homedepot.com.mx/p/hillman-tornillos-phillips-metal-negro-2-1-2-tablaroca-paquete-de-100-piezas-48981-139517" target="_blank" rel="noopener">Pijas tablaroca 2 1/2", paquete de 100</a><br><small>SKU 139517 · Estructura</small></td><td>$59</td><td><b>$236</b></td></tr>
+<tr><td class="n">5</td><td><a href="https://www.homedepot.com.mx/p/hillman-tornillos-negros-1-5-8-para-tablaroca-rosca-gruesa-paquete-de-100-piezas-961520op05-139504" target="_blank" rel="noopener">Pijas tablaroca 1 5/8", paquete de 100</a><br><small>SKU 139504 · Superficie</small></td><td>$35</td><td><b>$175</b></td></tr>
+<tr><td class="n">1</td><td><a href="https://www.homedepot.com.mx/p/the-project-center-tornillos-phillips-acero-negro-8-x-3-tablaroca-paquete-de-50-piezas-40880-221050" target="_blank" rel="noopener">Pijas 3", paquete de 50</a><br><small>SKU 221050 · Coping</small></td><td>$183</td><td><b>$183</b></td></tr>
+          </tbody>
+          <tfoot><tr><td></td><td><b>Total materiales</b></td><td></td><td class="n">$14,524</td></tr></tfoot>
+        </table>
+      </div>
+      <div>
+        <div class="card cost-total">
+          <small>Estimado total</small>
+          <b>$14,524 MXN</b>
+          <p>Con un 10% extra para imprevistos (un barrote torcido, pijas que se acaban, un corte mal hecho) calcula unos <b>$16,000 MXN</b>. El envío o flete va aparte.</p>
+        </div>
+        <div class="card" style="margin-top:16px">
+          <h3>Cambios frente al plano original</h3>
+          <p><b>Masonite → triplay de 6 mm.</b> Home Depot México no vende masonite; el triplay delgado se dobla igual sobre la curva.</p>
+          <p><b>Tubo de acero negro 1.5" → conduit de 1 1/4".</b> Mide 4.1 cm por fuera, casi lo mismo que un coping clásico, y viene en tramos de 3 m.</p>
+          <p><b>Tabla 2x6 → dos barrotes 2x4.</b> No hay 2x6 en línea; dos barrotes acostados hacen un asiento de 18 cm.</p>
+          <h3 style="margin-top:14px">Si quieres subir de calidad</h3>
+          <p>Polín tratado 4x4 (<a href="https://www.homedepot.com.mx/p/madera-dimensionada-polin-tratada-4-x-4-x-8-pies-para-construccion-926942-926942" target="_blank" rel="noopener">$489</a>) si la rampa va a estar afuera: +$620. Triplay BC de 18 mm (<a href="https://www.homedepot.com.mx/p/triplay-bc-122-x-244-m-18mm-554283-554283" target="_blank" rel="noopener">$919</a>) para laterales más parejos: +$732.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -245,12 +290,12 @@ footer .brands{display:inline-flex;margin-bottom:12px}
         <div class="num">2</div>
         <div>
           <h3>Largueros y coping</h3>
-          <p class="need"><b>Necesitas:</b> 30 barrotes 2x4 cortados a 2.40 m (15 por transición), 2 tubos de 1.5".</p>
+          <p class="need"><b>Necesitas:</b> 30 barrotes 2x4 cortados a 2.40 m (15 por transición), 2 tubos conduit de 1 1/4".</p>
           <ul>
             <li>Junta dos laterales y marca en la curva dónde va cada larguero, uno cada <b>20 cm (8")</b> medido sobre la curva. Abajo, en la orilla de la parte plana, van <b>dos juntos</b>: ahí se apoya el fondo plano.</li>
             <li>Corta a 2.40 m (7' 10½"). Con los dos laterales de 3/4" queda un ancho total exacto de 2.44 m (8'), así la superficie cae perfecta.</li>
             <li>Atornilla cada larguero entre los laterales con 2 pijas de 2.5" por lado, con la cara al ras de la curva. Pon también uno abajo atrás para que el módulo quede a escuadra.</li>
-            <li>Antes del último larguero de arriba, haz la muesca del coping en los laterales. Prueba con retazos de 3/8" + 1/4" encima de la curva y del 3/4" en la plataforma para ver qué tanto sobresale el tubo; eso es gusto personal.</li>
+            <li>Antes del último larguero de arriba, haz la muesca del coping en los laterales. Prueba con retazos de 3/8" + 6 mm encima de la curva y del 3/4" en la plataforma para ver qué tanto sobresale el tubo; eso es gusto personal.</li>
             <li>Con el tubo en su lugar, atornilla el larguero de arriba pegado al tubo. Luego retira el tubo hasta el final.</li>
           </ul>
           <button class="chip see3d" data-step="2">Ver paso 2 en 3D</button>
@@ -260,15 +305,15 @@ footer .brands{display:inline-flex;margin-bottom:12px}
         <div class="num">3</div>
         <div>
           <h3>Superficie de la transición</h3>
-          <p class="need"><b>Necesitas:</b> 4 hojas de triplay de 3/8", 4 de masonite de 1/4", pijas de 1.25".</p>
+          <p class="need"><b>Necesitas:</b> 4 hojas de triplay de 3/8", 4 de triplay de 6 mm, pijas de 1 5/8".</p>
           <ul>
             <li>Coloca la primera hoja de 3/8" en vertical (a lo largo de la curva), alineada abajo entre los dos largueros juntos. Así la unión entre hojas cae sobre un larguero.</li>
             <li>Para doblarla, humedece una toalla en agua caliente y pásala por la cara de la hoja. Dóblala poco a poco con el peso del cuerpo. Si escuchas crujidos, para y deja que se humedezca más.</li>
-            <li>El triplay solo necesita algunas pijas: el masonite de encima es el que sujeta las dos capas.</li>
-            <li>Encima pon el masonite. Si puedes, desfasa las uniones 30 cm respecto a la capa de abajo para que la superficie quede más firme. Ponle bastantes pijas: unas 50 por hoja.</li>
+            <li>El triplay solo necesita algunas pijas: la capa de 6 mm de encima es la que sujeta las dos capas.</li>
+            <li>Encima pon el triplay de 6 mm. Si puedes, desfasa las uniones 30 cm respecto a la capa de abajo para que la superficie quede más firme. Ponle bastantes pijas: unas 50 por hoja.</li>
             <li>Con las dos capas puestas, vuelve a meter el coping y recorta arriba lo que sobre (con estas medidas, casi nada).</li>
           </ul>
-          <div class="note">Lo ideal son dos capas de 3/8" más masonite. Aquí van una de triplay y una de masonite para que cada módulo se separe sin quitar capas.</div>
+          <div class="note">Lo clásico es triplay más masonite (tablero duro), pero Home Depot México no lo maneja: el triplay de 6 mm encima funciona bien y se dobla fácil. Las capas terminan en la orilla de cada módulo para poder separarlos sin quitar nada.</div>
           <button class="chip see3d" data-step="3">Ver paso 3 en 3D</button>
         </div>
       </li>
@@ -290,13 +335,13 @@ footer .brands{display:inline-flex;margin-bottom:12px}
         <div class="num">5</div>
         <div>
           <h3>Fondo plano</h3>
-          <p class="need"><b>Necesitas:</b> 2 hojas de 3/8", 2 de masonite, 11 barrotes 2x4.</p>
+          <p class="need"><b>Necesitas:</b> 2 hojas de 3/8", 2 de 6 mm, 11 barrotes 2x4.</p>
           <ul>
             <li>El fondo plano mide 1.83 m (6'). Sumado a los 30.5 cm planos de cada transición, te quedan 2.44 m (8') de piso para rodar.</li>
             <li>Corta 2 barrotes a 1.83 m (los de afuera) y 9 a 2.36 m (7' 9"). Como un 2x4 mide 3.8 cm de grueso, el marco queda exacto de 2.44 m.</li>
             <li>Arma la caja con los dos de 1.83 m por fuera y reparte los travesaños cada 20 cm.</li>
             <li>Empuja el marco contra una transición, alinéalo y todavía no lo atornilles.</li>
-            <li>La superficie (triplay + masonite) va cortada a <b>1.91 m (6' 3")</b>: sobresale 3.8 cm de cada lado y se apoya sobre el larguero doble de cada transición. Solo esa franja se atornilla a la transición.</li>
+            <li>La superficie (triplay de 3/8" + 6 mm) va cortada a <b>1.91 m (6' 3")</b>: sobresale 3.8 cm de cada lado y se apoya sobre el larguero doble de cada transición. Solo esa franja se atornilla a la transición.</li>
           </ul>
           <div class="note">Para mover la rampa, quitas las 6 a 8 pijas de cada orilla del fondo plano y te quedan tres módulos.</div>
           <button class="chip see3d" data-step="5">Ver paso 5 en 3D</button>
@@ -306,11 +351,11 @@ footer .brands{display:inline-flex;margin-bottom:12px}
         <div class="num">6</div>
         <div>
           <h3>Soportes y banca</h3>
-          <p class="need"><b>Necesitas:</b> 2 polines 4x4 de 8', 2 barrotes 2x4 de 10', 2 de 8', 2 tablas 2x6.</p>
+          <p class="need"><b>Necesitas:</b> 2 polines 4x4 de 8', 2 barrotes 2x4 de 10' y 6 de 8'.</p>
           <ul>
             <li>Corta los 4x4 a la altura de la plataforma (1.12 m) y mételos en la esquina interior de cada plataforma, contra el lateral y el trasero. Atorníllalos revisando con el nivel que queden a plomo.</li>
             <li>Agrega un taco en la base de cada poste para que no se mueva.</li>
-            <li>Banca (opcional): atornilla dos 2x4 a los postes a <b>46 cm (18")</b> de alto, con una pata al final, y encima una tabla 2x6.</li>
+            <li>Banca (opcional): atornilla dos 2x4 a los postes a <b>46 cm (18")</b> de alto, con una pata al final, y encima dos barrotes 2x4 acostados como asiento.</li>
             <li>Pon una diagonal de 2x4 atrás, de la base de un poste a la parte alta del otro. Si te alcanza la madera, pon dos en cruz.</li>
           </ul>
           <button class="chip see3d" data-step="6">Ver paso 6 en 3D</button>
@@ -322,9 +367,9 @@ footer .brands{display:inline-flex;margin-bottom:12px}
   <section>
     <h2>Antes de rodar</h2>
     <div class="safety">
-      <div class="card"><h3>Pijas a ras</h3><p>Pasa la mano por toda la superficie. Ninguna cabeza de pija debe sobresalir del masonite.</p></div>
-      <div class="card"><h3>Coping firme</h3><p>Fija cada tubo con 4 tornillos de 1/4" pasados al larguero de arriba y lima cualquier rebaba.</p></div>
-      <div class="card"><h3>Bajo techo o cubierta</h3><p>El masonite se hincha con el agua. Si la rampa queda afuera, tápala con una lona.</p></div>
+      <div class="card"><h3>Pijas a ras</h3><p>Pasa la mano por toda la superficie. Ninguna cabeza de pija debe sobresalir de la superficie.</p></div>
+      <div class="card"><h3>Coping firme</h3><p>Taladra el tubo y fíjalo con 4 pijas de 3" al larguero de arriba y lima cualquier rebaba.</p></div>
+      <div class="card"><h3>Bajo techo o cubierta</h3><p>El triplay se hincha y se despega con el agua. Si la rampa queda afuera, tápala con una lona.</p></div>
     </div>
   </section>
 </main>
@@ -397,8 +442,8 @@ const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim
 
 const STEPS=[
   {t:'Laterales',d:'4 laterales de triplay 3/4" con la curva de 2.08 m de radio.'},
-  {t:'Largueros',d:'15 largueros de 2x4 por transición, al ras de la curva, y el coping de tubo de acero.'},
-  {t:'Superficie',d:'Triplay de 3/8" doblado sobre la curva y masonite de 1/4" encima.'},
+  {t:'Largueros',d:'15 largueros de 2x4 por transición, al ras de la curva, y el coping de tubo conduit.'},
+  {t:'Superficie',d:'Triplay de 3/8" doblado sobre la curva y triplay de 6 mm encima.'},
   {t:'Plataformas',d:'Marco de 2x4 de 61 cm y triplay de 3/4" pegado al coping.'},
   {t:'Fondo plano',d:'Marco de 1.83 × 2.44 m con superficie que monta 3.8 cm en cada transición.'},
   {t:'Soportes',d:'Postes 4x4 en las esquinas, diagonal de refuerzo y banca a 46 cm.'},
@@ -481,10 +526,10 @@ function quarter(dir){
   for(let s=4;s<=76;s+=8){const t=s/R;const b=box(1.5,3.5,L,'lumber',2,lab,q,FLAT+(R+1.75)*Math.sin(t),CY-(R+1.75)*Math.cos(t),0);b.rotation.z=t}
   {const t=84/R;const b=box(1.5,3.5,L,'lumber',2,'Larguero superior 2x4 (contra el coping)',q,FLAT+(R+1.75)*Math.sin(t),CY-(R+1.75)*Math.cos(t),0);b.rotation.z=t}
   box(1.5,3.5,L,'lumber',2,'Larguero trasero 2x4',q,UE-0.75,1.75,0);
-  const cop=part(new THREE.CylinderGeometry(0.95,0.95,W,28),'steel',2,'Coping · tubo de acero 1.5" × 8\'',q);
+  const cop=part(new THREE.CylinderGeometry(0.81,0.81,W,28),'steel',2,'Coping · tubo conduit 1 1/4"',q);
   cop.rotation.x=Math.PI/2; cop.position.set(UE-0.35,H-0.2,0);
   // 3. superficie
-  for(const [ri,ro,kind,label] of [[R-0.375,R,'ply','Superficie · triplay 3/8"'],[R-0.625,R-0.375,'masonite','Superficie · masonite 1/4"']]){
+  for(const [ri,ro,kind,label] of [[R-0.375,R,'ply','Superficie · triplay 3/8"'],[R-0.625,R-0.375,'masonite','Superficie · triplay 6 mm']]){
     const m=part(extrude(layerShape(ri,ro,1.5),W),kind,3,label,q); m.position.z=-W/2;
   }
   // 4. plataforma
@@ -500,7 +545,7 @@ function quarter(dir){
     box(15.75,3.5,1.5,'lumber',6,'Brazo de banca 2x4 · a 46 cm',q,pu-1.75+15.75/2,18-1.75,sz*47.25);
     box(1.5,14.5,3.5,'lumber',6,'Pata de banca 2x4',q,pu+13,7.25,sz*47.25);
   }
-  box(5.5,1.5,W,'lumber',6,'Asiento de banca · tabla 2x6',q,pu+8.5,18.75,0);
+  for(const du of [6.5,10.25]) box(3.5,1.5,W,'lumber',6,'Asiento de banca · barrote 2x4 acostado',q,pu+du,18.75,0);
   {const span=89.5, rise=H-8, len=Math.hypot(span,rise);
    const d=box(1.5,3.5,len,'lumber',6,'Diagonal de refuerzo 2x4 de 10\'',q,UE+DECK+0.75,4+rise/2,0);d.rotation.x=Math.atan2(rise,span)}
   // logos en los laterales
@@ -519,7 +564,7 @@ const fb=new THREE.Group(); scene.add(fb);
 for(const z of [-(W/2-0.75),W/2-0.75]) box(72,3.5,1.5,'lumber',5,'Larguero exterior 2x4 · 1.83 m',fb,0,1.75,z);
 for(let i=0;i<9;i++) box(1.5,3.5,W-3,'lumber',5,'Travesaño 2x4 · 2.36 m',fb,-35.25+i*70.5/8,1.75,0);
 box(75,0.375,W,'ply',5,'Fondo plano · triplay 3/8" · 1.91 m',fb,0,BASE+0.1875,0);
-box(75,0.25,W,'masonite',5,'Fondo plano · masonite 1/4" · 1.91 m',fb,0,BASE+0.5,0);
+box(75,0.25,W,'masonite',5,'Fondo plano · triplay 6 mm · 1.91 m',fb,0,BASE+0.5,0);
 {const st=new THREE.Mesh(new THREE.PlaneGeometry(62,19.4),null);st.rotation.x=-Math.PI/2;st.position.set(0,BASE+0.64,0);st.userData={step:5};stickers.push(st);fb.add(st)}
 
 // Calcomanía luuply × Marblism (canvas con ambos logos)
