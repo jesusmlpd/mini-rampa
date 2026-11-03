@@ -1,0 +1,598 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mini Rampa luuply × Marblism</title>
+<meta name="description" content="Guía paso a paso y modelo 3D interactivo para construir una mini rampa (half pipe) de 2.44 m de ancho, con medidas en centímetros y pulgadas.">
+<link rel="icon" href="assets/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5f2ec; --surface:#ffffff; --surface-2:#efe9df; --fg:#17161a; --muted:#5f5b66; --line:#ddd5c8;
+  --acc:#6b5cf6; --acc-soft:#ece9ff; --on-acc:#fff; --wood:#d8b57c;
+  --scene-bg:#ece6dc; --ground:#e2dacd;
+}
+:root[data-theme="dark"]{
+  --bg:#111114; --surface:#1b1b20; --surface-2:#24242b; --fg:#f2f0f5; --muted:#a8a4b0; --line:#2f2f37;
+  --acc:#8f84ff; --acc-soft:#26233f; --on-acc:#0e0d14; --wood:#c9a46c;
+  --scene-bg:#17171c; --ground:#202027;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:"Bricolage Grotesque",Inter,sans-serif;line-height:1.08;margin:0;letter-spacing:-.02em}
+a{color:var(--acc)}
+.wrap{max-width:1160px;margin:0 auto;padding:0 16px}
+
+header.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;align-items:center;gap:16px;height:64px}
+.brands{display:flex;align-items:center;gap:12px;background:#fff;border-radius:999px;padding:8px 16px;border:1px solid var(--line)}
+.brands img{height:22px;width:auto;display:block}
+.brands .x{font-weight:700;color:#888;font-size:14px}
+nav.links{margin-left:auto;display:flex;gap:18px;font-size:14px}
+nav.links a{color:var(--muted);text-decoration:none}
+nav.links a:hover{color:var(--fg)}
+.theme-btn{border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:999px;width:38px;height:38px;cursor:pointer;font-size:16px;flex:none}
+@media (max-width:760px){nav.links{display:none}.theme-btn{margin-left:auto}}
+
+.hero{padding:48px 0 24px}
+.eyebrow{display:inline-block;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--acc);background:var(--acc-soft);padding:6px 12px;border-radius:999px}
+.hero h1{font-size:clamp(40px,6.4vw,76px);font-weight:800;margin:16px 0 14px}
+.hero h1 span{color:var(--acc)}
+.hero p.lead{font-size:clamp(17px,2vw,20px);color:var(--muted);max-width:720px;margin:0}
+
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:28px 0 0}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px}
+.stat b{display:block;font-family:"Bricolage Grotesque";font-size:28px;letter-spacing:-.02em}
+.stat small{color:var(--muted);font-size:13px}
+@media (max-width:760px){.stats{grid-template-columns:repeat(2,1fr)}}
+
+/* 3D viewer */
+.viewer{margin:28px 0 8px;background:var(--surface);border:1px solid var(--line);border-radius:22px;overflow:hidden}
+.stage{position:relative;height:min(68vh,620px);min-height:380px;background:var(--scene-bg);touch-action:none}
+.stage canvas{display:block;width:100%;height:100%}
+.tip{position:absolute;pointer-events:none;background:var(--fg);color:var(--bg);font-size:13px;padding:6px 10px;border-radius:8px;transform:translate(12px,12px);white-space:nowrap;opacity:0;transition:opacity .12s}
+.stage .hint{position:absolute;left:14px;bottom:12px;font-size:12px;color:var(--muted);background:color-mix(in srgb,var(--surface) 80%,transparent);padding:4px 10px;border-radius:999px}
+.stage .tools{position:absolute;right:12px;top:12px;display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.chip{border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:999px;padding:8px 14px;font:600 13px Inter;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.loading{position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);font-size:14px}
+.steps-bar{display:flex;gap:8px;padding:14px;border-top:1px solid var(--line);overflow-x:auto}
+.steps-bar button{flex:none;border:1px solid var(--line);background:var(--surface-2);color:var(--fg);border-radius:12px;padding:10px 14px;font:600 14px Inter;cursor:pointer;text-align:left}
+.steps-bar button small{display:block;font-weight:500;color:var(--muted);font-size:12px}
+.steps-bar button[aria-pressed="true"]{background:var(--acc);border-color:var(--acc);color:var(--on-acc)}
+.steps-bar button[aria-pressed="true"] small{color:inherit;opacity:.85}
+.step-caption{padding:0 16px 16px;color:var(--muted);font-size:14px;min-height:24px}
+.step-caption b{color:var(--fg)}
+
+section{padding:56px 0 8px}
+section h2{font-size:clamp(30px,4vw,44px);font-weight:800;margin-bottom:10px}
+section .sub{color:var(--muted);max-width:720px;margin:0 0 24px}
+
+.grid2{display:grid;grid-template-columns:1.2fr 1fr;gap:16px}
+@media (max-width:860px){.grid2{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:20px}
+.card h3{font-size:20px;margin-bottom:6px}
+.card p{margin:0 0 10px;color:var(--muted);font-size:15px}
+svg.plan{width:100%;height:auto;display:block}
+svg.plan text{font:600 11px Inter;fill:var(--fg)}
+svg.plan .dim{stroke:var(--acc);stroke-width:1.2;fill:none}
+svg.plan .dimt{fill:var(--acc)}
+svg.plan .piece{fill:var(--wood);stroke:var(--fg);stroke-width:1.4}
+svg.plan .piece2{fill:color-mix(in srgb,var(--wood) 70%,var(--acc));stroke:var(--fg);stroke-width:1.4}
+svg.plan .sheet{fill:none;stroke:var(--muted);stroke-width:1.2;stroke-dasharray:5 4}
+svg.plan .guide{stroke:var(--muted);stroke-width:1;stroke-dasharray:3 4;fill:none}
+
+table{width:100%;border-collapse:collapse;font-size:15px}
+th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600}
+td.n{font-family:"Bricolage Grotesque";font-weight:700;font-size:18px;white-space:nowrap}
+td small{color:var(--muted)}
+.table-scroll{overflow-x:auto}
+
+.tools-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.tools-list span{background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:14px}
+
+ol.steps{list-style:none;margin:0;padding:0;display:grid;gap:16px}
+ol.steps>li{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:22px;display:grid;grid-template-columns:64px 1fr;gap:18px}
+@media (max-width:600px){ol.steps>li{grid-template-columns:1fr}}
+.num{width:56px;height:56px;border-radius:16px;background:var(--acc);color:var(--on-acc);display:grid;place-items:center;font:800 26px "Bricolage Grotesque"}
+ol.steps h3{font-size:24px;margin:4px 0 8px}
+ol.steps ul{margin:8px 0;padding-left:20px}
+ol.steps li li{margin:4px 0}
+.need{font-size:14px;color:var(--muted);margin:0 0 8px}
+.need b{color:var(--fg)}
+.see3d{margin-top:8px}
+.note{border-left:3px solid var(--acc);background:var(--acc-soft);padding:10px 14px;border-radius:0 12px 12px 0;font-size:14px;margin:10px 0 0}
+
+.safety{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media (max-width:760px){.safety{grid-template-columns:1fr}}
+
+footer{margin:64px 0 0;border-top:1px solid var(--line);padding:28px 0 48px;color:var(--muted);font-size:14px}
+footer .brands{display:inline-flex;margin-bottom:12px}
+</style>
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
+</script>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="brands" aria-label="luuply × Marblism">
+      <img src="assets/luuply.png" alt="luuply"><span class="x">×</span><img src="assets/marblism.png" alt="Marblism">
+    </div>
+    <nav class="links">
+      <a href="#modelo">Modelo 3D</a><a href="#plano">Plano</a><a href="#materiales">Materiales</a><a href="#pasos">Pasos</a>
+    </nav>
+    <button class="theme-btn" id="themeBtn" aria-label="Cambiar a modo oscuro">☾</button>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="hero">
+    <span class="eyebrow">Guía de construcción</span>
+    <h1>Mini rampa <span>luuply × Marblism</span></h1>
+    <p class="lead">Un half pipe de 2.44 m de ancho que se arma en tres módulos y se puede desarmar para moverlo. Aquí está el plano completo, la lista de compras, los cortes y los 6 pasos, más un modelo 3D que puedes girar y ver pieza por pieza.</p>
+    <div class="stats">
+      <div class="stat"><b>7.26 m</b><small>Largo total (23' 10")</small></div>
+      <div class="stat"><b>2.44 m</b><small>Ancho (8')</small></div>
+      <div class="stat"><b>1.14 m</b><small>Altura al coping (3' 9")</small></div>
+      <div class="stat"><b>2.08 m</b><small>Radio de la transición (6' 10")</small></div>
+    </div>
+  </div>
+
+  <div class="viewer" id="modelo">
+    <div class="stage" id="stage">
+      <div class="loading" id="loading">Cargando modelo 3D…</div>
+      <div class="tools">
+        <button class="chip" id="explodeBtn" aria-pressed="false">Separar módulos</button>
+        <button class="chip" id="resetBtn">Centrar vista</button>
+      </div>
+      <div class="hint">Arrastra para girar · rueda o pellizco para zoom · pasa el cursor sobre una pieza</div>
+      <div class="tip" id="tip"></div>
+    </div>
+    <div class="steps-bar" id="stepsBar"></div>
+    <div class="step-caption" id="stepCaption"></div>
+  </div>
+
+  <section id="plano">
+    <h2>El plano</h2>
+    <p class="sub">Todo sale de una sola curva: un arco de 2.08 m de radio trazado con hilo y lápiz. Cada lateral mide 2.10 × 1.12 m y, acomodados como en el dibujo, salen dos laterales de cada hoja de triplay de 4' × 8'.</p>
+    <div class="grid2">
+      <div class="card">
+        <h3>Lateral de la transición</h3>
+        <p>Vista de perfil, con el centro del compás marcado arriba.</p>
+        <svg class="plan" id="svgSide" role="img" aria-label="Perfil del lateral con medidas"></svg>
+      </div>
+      <div class="card">
+        <h3>Dos laterales por hoja</h3>
+        <p>Corta el primero y gira 180° el sobrante: el segundo lateral queda casi completo.</p>
+        <svg class="plan" id="svgSheet" role="img" aria-label="Acomodo de dos laterales en una hoja de 4 por 8 pies"></svg>
+        <p style="margin-top:10px">Hoja de 2.44 × 1.22 m (8' × 4'). Necesitas 2 hojas para los 4 laterales.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="materiales">
+    <h2>Lista de compras</h2>
+    <p class="sub">Para la rampa completa: dos transiciones, fondo plano, dos plataformas, soportes y banca. Compra 2 o 3 barrotes de más por si alguno sale torcido.</p>
+    <div class="grid2">
+      <div class="card table-scroll">
+        <table>
+          <thead><tr><th>Cant.</th><th>Material</th><th>Para qué</th></tr></thead>
+          <tbody>
+            <tr><td class="n">47</td><td>Barrote 2x4 de 8' (2.44 m)<br><small>Medida real 3.8 × 8.9 cm</small></td><td>Largueros, fondo plano, plataforma y banca</td></tr>
+            <tr><td class="n">2</td><td>Barrote 2x4 de 10' (3.05 m)</td><td>Diagonales de refuerzo</td></tr>
+            <tr><td class="n">3</td><td>Triplay de 3/4" (19 mm), hoja 4' × 8'</td><td>4 laterales + 2 plataformas</td></tr>
+            <tr><td class="n">6</td><td>Triplay de 3/8" (9 mm), hoja 4' × 8'</td><td>Primera capa de la superficie</td></tr>
+            <tr><td class="n">6</td><td>Masonite de 1/4" (6 mm), hoja 4' × 8'</td><td>Capa de rodamiento</td></tr>
+            <tr><td class="n">2</td><td>Polín 4x4 de 8'<br><small>Medida real 8.9 × 8.9 cm</small></td><td>4 postes de soporte</td></tr>
+            <tr><td class="n">2</td><td>Tabla 2x6 de 8'</td><td>Asiento de las bancas</td></tr>
+            <tr><td class="n">2</td><td>Tubo de acero negro de 1.5" (3.8 cm), 8' de largo</td><td>Coping</td></tr>
+            <tr><td class="n">~3 kg</td><td>Pijas para tablaroca de 2.5" (6.4 cm)</td><td>Estructura</td></tr>
+            <tr><td class="n">~400</td><td>Pijas de 1.25" (3.2 cm) de cabeza plana</td><td>Superficie (unas 50 por hoja de masonite)</td></tr>
+            <tr><td class="n">8</td><td>Tornillos de 1/4" × 3" con tuerca</td><td>Fijar el coping a la estructura</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card">
+        <h3>Herramientas</h3>
+        <div class="tools-list">
+          <span>Sierra caladora</span><span>Sierra circular</span><span>Taladro y atornillador</span><span>Broca para metal</span><span>Cinta métrica</span><span>Escuadra</span><span>Nivel</span><span>Lápiz</span><span>Hilo de pescar (para el compás)</span><span>Lima o lija</span><span>Lentes y guantes</span>
+        </div>
+        <h3 style="margin-top:22px">Lista de cortes</h3>
+        <table>
+          <tbody>
+            <tr><td class="n">30</td><td>2x4 a <b>2.40 m</b> (7' 10½")<br><small>Largueros: 15 por transición</small></td></tr>
+            <tr><td class="n">2</td><td>2x4 a <b>1.83 m</b> (6')<br><small>Largueros exteriores del fondo plano</small></td></tr>
+            <tr><td class="n">9</td><td>2x4 a <b>2.36 m</b> (7' 9")<br><small>Travesaños del fondo plano</small></td></tr>
+            <tr><td class="n">4</td><td>2x4 a <b>61 cm</b> (2')<br><small>Laterales de plataforma</small></td></tr>
+            <tr><td class="n">4</td><td>2x4 a <b>2.36 m</b> / 57 cm<br><small>Trasero y viga central de cada plataforma (2 de cada uno)</small></td></tr>
+            <tr><td class="n">4</td><td>4x4 a <b>1.12 m</b> (44")<br><small>Postes, dos salen de cada polín</small></td></tr>
+            <tr><td class="n">2</td><td>Triplay 3/4" a <b>61 × 244 cm</b><br><small>Plataformas: una hoja cortada a la mitad</small></td></tr>
+            <tr><td class="n">4</td><td>Triplay 3/8" y masonite a <b>191 × 122 cm</b> (6' 3" × 4')<br><small>Superficie del fondo plano (2 de cada uno)</small></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="pasos">
+    <h2>Los 6 pasos</h2>
+    <p class="sub">Cada paso tiene su vista en el modelo 3D: las piezas nuevas se iluminan en morado.</p>
+    <ol class="steps">
+      <li>
+        <div class="num">1</div>
+        <div>
+          <h3>Traza y corta los laterales</h3>
+          <p class="need"><b>Necesitas:</b> 2 hojas de triplay de 3/4", un barrote 2x4, hilo de pescar, lápiz, sierra caladora.</p>
+          <ul>
+            <li>En la hoja, marca un punto a <b>30.5 cm (12")</b> del borde corto y a <b>8.9 cm (3½")</b> del borde largo. Ese es el inicio de la curva; los 30.5 cm antes son la parte plana.</li>
+            <li>Atornilla un 2x4 sobre la hoja, perpendicular al borde largo, con su orilla interior justo en la línea de 30.5 cm. El barrote sale de la hoja como un brazo.</li>
+            <li>Pon una pija en el barrote a <b>2.08 m (6' 10")</b> del punto de inicio. Ese es el centro del compás.</li>
+            <li>Amarra el hilo a la pija y el lápiz en el otro extremo, justo en el punto de inicio con el hilo tenso. Traza la curva despacio, con el lápiz siempre vertical. El hilo de pescar no se estira, por eso funciona.</li>
+            <li>La curva termina cuando toca <b>1.12 m (44")</b> de alto, a <b>2.10 m (82 13/16")</b> del borde. Corta con la caladora.</li>
+            <li>Usa el primer lateral como plantilla para los otros tres: gira la hoja sobrante 180° y salen dos por hoja.</li>
+          </ul>
+          <div class="note">¿Quieres una rampa más empinada? Reduce el radio. Por debajo de 1.07 m (3½') de radio la parte de arriba llega a vertical, lo cual ya es otra rampa.</div>
+          <button class="chip see3d" data-step="1">Ver paso 1 en 3D</button>
+        </div>
+      </li>
+      <li>
+        <div class="num">2</div>
+        <div>
+          <h3>Largueros y coping</h3>
+          <p class="need"><b>Necesitas:</b> 30 barrotes 2x4 cortados a 2.40 m (15 por transición), 2 tubos de 1.5".</p>
+          <ul>
+            <li>Junta dos laterales y marca en la curva dónde va cada larguero, uno cada <b>20 cm (8")</b> medido sobre la curva. Abajo, en la orilla de la parte plana, van <b>dos juntos</b>: ahí se apoya el fondo plano.</li>
+            <li>Corta a 2.40 m (7' 10½"). Con los dos laterales de 3/4" queda un ancho total exacto de 2.44 m (8'), así la superficie cae perfecta.</li>
+            <li>Atornilla cada larguero entre los laterales con 2 pijas de 2.5" por lado, con la cara al ras de la curva. Pon también uno abajo atrás para que el módulo quede a escuadra.</li>
+            <li>Antes del último larguero de arriba, haz la muesca del coping en los laterales. Prueba con retazos de 3/8" + 1/4" encima de la curva y del 3/4" en la plataforma para ver qué tanto sobresale el tubo; eso es gusto personal.</li>
+            <li>Con el tubo en su lugar, atornilla el larguero de arriba pegado al tubo. Luego retira el tubo hasta el final.</li>
+          </ul>
+          <button class="chip see3d" data-step="2">Ver paso 2 en 3D</button>
+        </div>
+      </li>
+      <li>
+        <div class="num">3</div>
+        <div>
+          <h3>Superficie de la transición</h3>
+          <p class="need"><b>Necesitas:</b> 4 hojas de triplay de 3/8", 4 de masonite de 1/4", pijas de 1.25".</p>
+          <ul>
+            <li>Coloca la primera hoja de 3/8" en vertical (a lo largo de la curva), alineada abajo entre los dos largueros juntos. Así la unión entre hojas cae sobre un larguero.</li>
+            <li>Para doblarla, humedece una toalla en agua caliente y pásala por la cara de la hoja. Dóblala poco a poco con el peso del cuerpo. Si escuchas crujidos, para y deja que se humedezca más.</li>
+            <li>El triplay solo necesita algunas pijas: el masonite de encima es el que sujeta las dos capas.</li>
+            <li>Encima pon el masonite. Si puedes, desfasa las uniones 30 cm respecto a la capa de abajo para que la superficie quede más firme. Ponle bastantes pijas: unas 50 por hoja.</li>
+            <li>Con las dos capas puestas, vuelve a meter el coping y recorta arriba lo que sobre (con estas medidas, casi nada).</li>
+          </ul>
+          <div class="note">Lo ideal son dos capas de 3/8" más masonite. Aquí van una de triplay y una de masonite para que cada módulo se separe sin quitar capas.</div>
+          <button class="chip see3d" data-step="3">Ver paso 3 en 3D</button>
+        </div>
+      </li>
+      <li>
+        <div class="num">4</div>
+        <div>
+          <h3>Plataformas</h3>
+          <p class="need"><b>Necesitas:</b> 1 hoja de triplay de 3/4", barrotes 2x4.</p>
+          <ul>
+            <li>Corta la hoja a la mitad a lo largo: dos piezas de 61 × 244 cm (2' × 8'), una por plataforma.</li>
+            <li>Pon la pieza sobre el lateral, pegada al coping, para medir el largo exacto de los 2x4 laterales de la plataforma (unos 61 cm).</li>
+            <li>Atornilla los dos laterales, el trasero (2.36 m) y una viga al centro.</li>
+            <li>Si vas a poner barandal o banca, hazlo ahora, antes de cerrar con el triplay. Al final atornilla el triplay de 3/4".</li>
+          </ul>
+          <button class="chip see3d" data-step="4">Ver paso 4 en 3D</button>
+        </div>
+      </li>
+      <li>
+        <div class="num">5</div>
+        <div>
+          <h3>Fondo plano</h3>
+          <p class="need"><b>Necesitas:</b> 2 hojas de 3/8", 2 de masonite, 11 barrotes 2x4.</p>
+          <ul>
+            <li>El fondo plano mide 1.83 m (6'). Sumado a los 30.5 cm planos de cada transición, te quedan 2.44 m (8') de piso para rodar.</li>
+            <li>Corta 2 barrotes a 1.83 m (los de afuera) y 9 a 2.36 m (7' 9"). Como un 2x4 mide 3.8 cm de grueso, el marco queda exacto de 2.44 m.</li>
+            <li>Arma la caja con los dos de 1.83 m por fuera y reparte los travesaños cada 20 cm.</li>
+            <li>Empuja el marco contra una transición, alinéalo y todavía no lo atornilles.</li>
+            <li>La superficie (triplay + masonite) va cortada a <b>1.91 m (6' 3")</b>: sobresale 3.8 cm de cada lado y se apoya sobre el larguero doble de cada transición. Solo esa franja se atornilla a la transición.</li>
+          </ul>
+          <div class="note">Para mover la rampa, quitas las 6 a 8 pijas de cada orilla del fondo plano y te quedan tres módulos.</div>
+          <button class="chip see3d" data-step="5">Ver paso 5 en 3D</button>
+        </div>
+      </li>
+      <li>
+        <div class="num">6</div>
+        <div>
+          <h3>Soportes y banca</h3>
+          <p class="need"><b>Necesitas:</b> 2 polines 4x4 de 8', 2 barrotes 2x4 de 10', 2 de 8', 2 tablas 2x6.</p>
+          <ul>
+            <li>Corta los 4x4 a la altura de la plataforma (1.12 m) y mételos en la esquina interior de cada plataforma, contra el lateral y el trasero. Atorníllalos revisando con el nivel que queden a plomo.</li>
+            <li>Agrega un taco en la base de cada poste para que no se mueva.</li>
+            <li>Banca (opcional): atornilla dos 2x4 a los postes a <b>46 cm (18")</b> de alto, con una pata al final, y encima una tabla 2x6.</li>
+            <li>Pon una diagonal de 2x4 atrás, de la base de un poste a la parte alta del otro. Si te alcanza la madera, pon dos en cruz.</li>
+          </ul>
+          <button class="chip see3d" data-step="6">Ver paso 6 en 3D</button>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Antes de rodar</h2>
+    <div class="safety">
+      <div class="card"><h3>Pijas a ras</h3><p>Pasa la mano por toda la superficie. Ninguna cabeza de pija debe sobresalir del masonite.</p></div>
+      <div class="card"><h3>Coping firme</h3><p>Fija cada tubo con 4 tornillos de 1/4" pasados al larguero de arriba y lima cualquier rebaba.</p></div>
+      <div class="card"><h3>Bajo techo o cubierta</h3><p>El masonite se hincha con el agua. Si la rampa queda afuera, tápala con una lona.</p></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="brands"><img src="assets/luuply.png" alt="luuply"><span class="x">×</span><img src="assets/marblism.png" alt="Marblism"></div>
+    <p>Guía reescrita y corregida a partir de <a href="https://www.scribd.com/document/311897837/Plano-de-Rampa-de-Skate" target="_blank" rel="noopener">“Planos para Mini Rampa de Skate”</a> (Scribd). Las medidas se ajustaron para que todo sea consistente: los laterales salen dos por hoja y la superficie entra con hojas de 8' completas.</p>
+  </div>
+</footer>
+
+<script>
+// Planos: mismas medidas que el modelo 3D (pulgadas)
+(function(){
+  const R=82, FLAT=12, BASE=3.5, CY=BASE+R, TH=85.5/R;
+  const H=CY-R*Math.cos(TH), UE=FLAT+R*Math.sin(TH);
+  window.RAMP={R,FLAT,BASE,CY,TH,H,UE};
+  const f=u=>u<=FLAT?BASE:CY-Math.sqrt(R*R-(u-FLAT)**2);
+  const cm=i=>(i*2.54/100).toFixed(2)+' m';
+  const ns='http://www.w3.org/2000/svg';
+  const el=(svg,tag,attrs,txt)=>{const e=document.createElementNS(ns,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(txt)e.textContent=txt;svg.appendChild(e);return e};
+  function profile(tx,ty){ // tx,ty map (u,y) to svg
+    let d=`M${tx(0,0)} L${tx(0,BASE)} L${tx(FLAT,BASE)}`;
+    for(let i=1;i<=60;i++){const t=TH*i/60;d+=` L${tx(FLAT+R*Math.sin(t),CY-R*Math.cos(t))}`}
+    return d+` L${tx(UE,0)} Z`;
+  }
+  // Lateral
+  {
+    const s=document.getElementById('svgSide'), k=5.2, ox=46, oy=490;
+    s.setAttribute('viewBox','0 0 560 560');
+    const P=(u,y)=>`${ox+u*k},${oy-y*k}`;
+    const X=u=>ox+u*k, Y=y=>oy-y*k;
+    el(s,'line',{x1:X(FLAT),y1:Y(CY),x2:X(FLAT),y2:Y(BASE),class:'guide'});
+    el(s,'line',{x1:X(FLAT),y1:Y(CY),x2:X(UE),y2:Y(H),class:'guide'});
+    el(s,'circle',{cx:X(FLAT),cy:Y(CY),r:4,fill:'var(--acc)'});
+    el(s,'text',{x:X(FLAT)+10,y:Y(CY)+4},'Centro del compás');
+    el(s,'text',{x:X(36),y:Y(60),class:'dimt'},'R = 2.08 m (6\' 10")');
+    el(s,'path',{d:profile(P),class:'piece'});
+    // cotas
+    const dimH=(u1,u2,y,label)=>{el(s,'path',{d:`M${X(u1)},${Y(y)} L${X(u2)},${Y(y)} M${X(u1)},${Y(y)-5} V${Y(y)+5} M${X(u2)},${Y(y)-5} V${Y(y)+5}`,class:'dim'});el(s,'text',{x:(X(u1)+X(u2))/2,y:Y(y)+17,'text-anchor':'middle',class:'dimt'},label)};
+    const dimV=(u,y1,y2,label,anchor)=>{el(s,'path',{d:`M${X(u)},${Y(y1)} L${X(u)},${Y(y2)} M${X(u)-5},${Y(y1)} H${X(u)+5} M${X(u)-5},${Y(y2)} H${X(u)+5}`,class:'dim'});el(s,'text',{x:X(u)+(anchor==='end'?-8:8),y:(Y(y1)+Y(y2))/2+4,'text-anchor':anchor||'start',class:'dimt'},label)};
+    dimH(0,UE,-7,`${cm(UE)} (82 13/16")`);
+    dimH(0,FLAT,10,'30.5 cm (12")');
+    dimV(UE+4,0,H,`${cm(H)}`);
+    el(s,'text',{x:X(UE+4)+8,y:(Y(0)+Y(H))/2+19,class:'dimt'},'(44 3/16")');
+    dimV(-3,0,BASE,'8.9 cm',"end");
+  }
+  // Hoja 4x8
+  {
+    const s=document.getElementById('svgSheet'), k=5, ox=20, oy=270;
+    s.setAttribute('viewBox','0 0 520 300');
+    const P=(u,y)=>`${ox+u*k},${oy-y*k}`, P2=(u,y)=>P(96-u,48-y);
+    el(s,'rect',{x:ox,y:oy-48*k,width:96*k,height:48*k,class:'sheet'});
+    el(s,'path',{d:profile(P),class:'piece'});
+    el(s,'path',{d:profile(P2),class:'piece2'});
+    el(s,'text',{x:ox+20*k,y:oy-6*k},'Lateral A');
+    el(s,'text',{x:ox+64*k,y:oy-40*k},'Lateral B (girado)');
+    el(s,'text',{x:ox+48*k,y:oy+20,'text-anchor':'middle',class:'dimt'},'2.44 m (8\')');
+  }
+})();
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+const {R,FLAT,BASE,CY,TH,H,UE}=window.RAMP;
+const W=96, DECK=24, HALF=36; // pulgadas
+const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+
+const STEPS=[
+  {t:'Laterales',d:'4 laterales de triplay 3/4" con la curva de 2.08 m de radio.'},
+  {t:'Largueros',d:'15 largueros de 2x4 por transición, al ras de la curva, y el coping de tubo de acero.'},
+  {t:'Superficie',d:'Triplay de 3/8" doblado sobre la curva y masonite de 1/4" encima.'},
+  {t:'Plataformas',d:'Marco de 2x4 de 61 cm y triplay de 3/4" pegado al coping.'},
+  {t:'Fondo plano',d:'Marco de 1.83 × 2.44 m con superficie que monta 3.8 cm en cada transición.'},
+  {t:'Soportes',d:'Postes 4x4 en las esquinas, diagonal de refuerzo y banca a 46 cm.'},
+];
+
+const stage=document.getElementById('stage');
+const renderer=new THREE.WebGLRenderer({antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.shadowMap.enabled=true;
+renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.outputColorSpace=THREE.SRGBColorSpace;
+stage.prepend(renderer.domElement);
+
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(38,1,1,6000);
+const controls=new OrbitControls(camera,renderer.domElement);
+controls.enableDamping=true;
+controls.maxPolarAngle=Math.PI*0.49;
+controls.minDistance=80; controls.maxDistance=900;
+function resetView(){camera.position.set(250,170,300);controls.target.set(0,22,0);controls.update()}
+resetView();
+
+scene.add(new THREE.HemisphereLight(0xffffff,0x8a7a66,1.1));
+const sun=new THREE.DirectionalLight(0xffffff,1.9);
+sun.position.set(160,300,220);
+sun.castShadow=true;
+sun.shadow.mapSize.set(2048,2048);
+Object.assign(sun.shadow.camera,{left:-220,right:220,top:220,bottom:-220,near:10,far:900});
+sun.shadow.bias=-0.0005;
+scene.add(sun);
+
+const ground=new THREE.Mesh(new THREE.CircleGeometry(900,64),new THREE.MeshStandardMaterial({roughness:1}));
+ground.rotation.x=-Math.PI/2; ground.receiveShadow=true; scene.add(ground);
+function applyTheme(){scene.background=new THREE.Color(css('--scene-bg'));ground.material.color.set(css('--ground'))}
+applyTheme();
+
+const MAT={
+  ply:{color:0xdcb985,roughness:.8},
+  lumber:{color:0xc9965a,roughness:.85},
+  masonite:{color:0x8a6646,roughness:.6},
+  post:{color:0xb5844e,roughness:.85},
+  steel:{color:0x7d848c,roughness:.35,metalness:.85},
+};
+const ACC=new THREE.Color(css('--acc'));
+const parts=[];
+function part(geo,kind,step,label,parent){
+  const m=new THREE.Mesh(geo,new THREE.MeshStandardMaterial(MAT[kind]));
+  m.castShadow=m.receiveShadow=true;
+  m.userData={step,label};
+  parent.add(m); parts.push(m); return m;
+}
+const box=(w,h,d,kind,step,label,parent,x,y,z)=>{const m=part(new THREE.BoxGeometry(w,h,d),kind,step,label,parent);m.position.set(x,y,z);return m};
+const extrude=(shape,depth)=>new THREE.ExtrudeGeometry(shape,{depth,bevelEnabled:false,curveSegments:48});
+
+// Perfil del lateral en (u,y)
+function sideShape(){
+  const s=new THREE.Shape();
+  s.moveTo(0,0); s.lineTo(0,BASE); s.lineTo(FLAT,BASE);
+  for(let i=1;i<=64;i++){const t=TH*i/64;s.lineTo(FLAT+R*Math.sin(t),CY-R*Math.cos(t))}
+  s.lineTo(UE,0); s.closePath(); return s;
+}
+// Capa curva de la superficie entre radios ri y ro
+function layerShape(ri,ro,uStart){
+  const s=new THREE.Shape(), N=64;
+  s.moveTo(uStart,CY-ro); s.lineTo(FLAT,CY-ro);
+  for(let i=1;i<=N;i++){const t=TH*i/N;s.lineTo(FLAT+ro*Math.sin(t),CY-ro*Math.cos(t))}
+  for(let i=N;i>=0;i--){const t=TH*i/N;s.lineTo(FLAT+ri*Math.sin(t),CY-ri*Math.cos(t))}
+  s.lineTo(uStart,CY-ri); s.closePath(); return s;
+}
+
+const stickers=[];
+function quarter(dir){
+  const q=new THREE.Group();
+  // 1. laterales
+  for(const z of [-W/2,W/2-0.75]){const m=part(extrude(sideShape(),0.75),'ply',1,'Lateral · triplay 3/4" · 2.10 × 1.12 m',q);m.position.z=z}
+  // 2. largueros
+  const L=W-1.5, lab='Larguero 2x4 · 2.40 m';
+  for(const u of [0.75,2.25,8.5]) box(1.5,3.5,L,'lumber',2,lab,q,u,1.75,0);
+  for(let s=4;s<=76;s+=8){const t=s/R;const b=box(1.5,3.5,L,'lumber',2,lab,q,FLAT+(R+1.75)*Math.sin(t),CY-(R+1.75)*Math.cos(t),0);b.rotation.z=t}
+  {const t=84/R;const b=box(1.5,3.5,L,'lumber',2,'Larguero superior 2x4 (contra el coping)',q,FLAT+(R+1.75)*Math.sin(t),CY-(R+1.75)*Math.cos(t),0);b.rotation.z=t}
+  box(1.5,3.5,L,'lumber',2,'Larguero trasero 2x4',q,UE-0.75,1.75,0);
+  const cop=part(new THREE.CylinderGeometry(0.95,0.95,W,28),'steel',2,'Coping · tubo de acero 1.5" × 8\'',q);
+  cop.rotation.x=Math.PI/2; cop.position.set(UE-0.35,H-0.2,0);
+  // 3. superficie
+  for(const [ri,ro,kind,label] of [[R-0.375,R,'ply','Superficie · triplay 3/8"'],[R-0.625,R-0.375,'masonite','Superficie · masonite 1/4"']]){
+    const m=part(extrude(layerShape(ri,ro,1.5),W),kind,3,label,q); m.position.z=-W/2;
+  }
+  // 4. plataforma
+  for(const z of [-(W/2-0.75),W/2-0.75]) box(DECK,3.5,1.5,'lumber',4,'Lateral de plataforma 2x4 · 61 cm',q,UE+DECK/2,H-1.75,z);
+  box(1.5,3.5,W-3,'lumber',4,'Trasero de plataforma 2x4 · 2.36 m',q,UE+DECK-0.75,H-1.75,0);
+  box(DECK-3,3.5,1.5,'lumber',4,'Viga central 2x4',q,UE+DECK/2-0.75,H-1.75,0);
+  box(DECK-0.6,0.75,W,'ply',4,'Plataforma · triplay 3/4" · 61 × 244 cm',q,UE+0.6+(DECK-0.6)/2,H+0.375,0);
+  // 6. soportes y banca
+  const pu=UE+DECK-1.5-1.75;
+  for(const sz of [-1,1]){
+    box(3.5,H,3.5,'post',6,'Poste 4x4 · 1.12 m',q,pu,H/2,sz*44.75);
+    box(10,1.5,3.5,'lumber',6,'Taco de base 2x4',q,pu,0.75,sz*(44.75-3.5));
+    box(15.75,3.5,1.5,'lumber',6,'Brazo de banca 2x4 · a 46 cm',q,pu-1.75+15.75/2,18-1.75,sz*47.25);
+    box(1.5,14.5,3.5,'lumber',6,'Pata de banca 2x4',q,pu+13,7.25,sz*47.25);
+  }
+  box(5.5,1.5,W,'lumber',6,'Asiento de banca · tabla 2x6',q,pu+8.5,18.75,0);
+  {const span=89.5, rise=H-8, len=Math.hypot(span,rise);
+   const d=box(1.5,3.5,len,'lumber',6,'Diagonal de refuerzo 2x4 de 10\'',q,UE+DECK+0.75,4+rise/2,0);d.rotation.x=Math.atan2(rise,span)}
+  // logos en los laterales
+  for(const sz of [-1,1]){
+    const st=new THREE.Mesh(new THREE.PlaneGeometry(22,6.9),null);
+    st.position.set(72,11.5,sz*(W/2+0.05)); if(sz<0) st.rotation.y=Math.PI;
+    st.userData={step:1}; stickers.push(st); q.add(st);
+  }
+  q.position.x=dir*HALF; if(dir<0) q.rotation.y=Math.PI;
+  scene.add(q); return q;
+}
+const qR=quarter(1), qL=quarter(-1);
+
+// 5. fondo plano
+const fb=new THREE.Group(); scene.add(fb);
+for(const z of [-(W/2-0.75),W/2-0.75]) box(72,3.5,1.5,'lumber',5,'Larguero exterior 2x4 · 1.83 m',fb,0,1.75,z);
+for(let i=0;i<9;i++) box(1.5,3.5,W-3,'lumber',5,'Travesaño 2x4 · 2.36 m',fb,-35.25+i*70.5/8,1.75,0);
+box(75,0.375,W,'ply',5,'Fondo plano · triplay 3/8" · 1.91 m',fb,0,BASE+0.1875,0);
+box(75,0.25,W,'masonite',5,'Fondo plano · masonite 1/4" · 1.91 m',fb,0,BASE+0.5,0);
+{const st=new THREE.Mesh(new THREE.PlaneGeometry(62,19.4),null);st.rotation.x=-Math.PI/2;st.position.set(0,BASE+0.64,0);st.userData={step:5};stickers.push(st);fb.add(st)}
+
+// Calcomanía luuply × Marblism (canvas con ambos logos)
+const loadImg=src=>new Promise((ok,err)=>{const i=new Image();i.onload=()=>ok(i);i.onerror=err;i.src=src});
+Promise.all([loadImg('assets/luuply.png'),loadImg('assets/marblism.png')]).then(([lu,mb])=>{
+  const c=document.createElement('canvas');c.width=2048;c.height=640;const g=c.getContext('2d');
+  g.fillStyle='#ffffff';g.beginPath();g.roundRect(8,8,2032,624,120);g.fill();
+  g.lineWidth=14;g.strokeStyle='#6b5cf6';g.stroke();
+  const h1=250,w1=h1*lu.width/lu.height; g.drawImage(lu,120,(640-h1)/2+10,w1,h1);
+  g.fillStyle='#9a96a3';g.font='700 150px Inter, sans-serif';g.textAlign='center';g.textBaseline='middle';g.fillText('×',120+w1+95,330);
+  const h2=290,w2=h2*mb.width/mb.height; g.drawImage(mb,120+w1+190,(640-h2)/2+10,w2,h2);
+  const tex=new THREE.CanvasTexture(c);tex.colorSpace=THREE.SRGBColorSpace;tex.anisotropy=8;
+  const mat=new THREE.MeshStandardMaterial({map:tex,transparent:true,roughness:.5,polygonOffset:true,polygonOffsetFactor:-4});
+  stickers.forEach(s=>s.material=mat); setStep(current);
+});
+
+// Pasos
+let current=7;
+const bar=document.getElementById('stepsBar'), cap=document.getElementById('stepCaption');
+[...STEPS.map((s,i)=>({n:i+1,label:`Paso ${i+1}`,small:s.t})),{n:7,label:'Rampa completa',small:'Todo armado'}].forEach(s=>{
+  const b=document.createElement('button');b.dataset.step=s.n;b.innerHTML=`${s.label}<small>${s.small}</small>`;
+  b.onclick=()=>setStep(s.n);bar.appendChild(b);
+});
+function setStep(n){
+  current=n;
+  for(const m of parts){
+    m.visible=m.userData.step<=n;
+    m.material.emissive.copy(m.userData.step===n?ACC:new THREE.Color(0));
+    m.material.emissiveIntensity=m.userData.step===n?0.45:0;
+  }
+  for(const s of stickers) s.visible=!!s.material&&s.userData.step<=n;
+  bar.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.step===n)));
+  cap.innerHTML=n<7?`<b>Paso ${n}. ${STEPS[n-1].t}:</b> ${STEPS[n-1].d}`:'<b>Rampa completa:</b> 7.26 m de largo, 2.44 m de ancho y 1.14 m de alto. Tres módulos que se separan.';
+}
+setStep(7);
+document.querySelectorAll('.see3d').forEach(b=>b.onclick=()=>{setStep(+b.dataset.step);document.getElementById('modelo').scrollIntoView({behavior:'smooth'})});
+
+// Separar módulos
+let explode=0, explodeTarget=0;
+const exBtn=document.getElementById('explodeBtn');
+exBtn.onclick=()=>{explodeTarget=explodeTarget?0:1;exBtn.setAttribute('aria-pressed',String(!!explodeTarget))};
+document.getElementById('resetBtn').onclick=resetView;
+
+// Tooltip
+const tip=document.getElementById('tip'), ray=new THREE.Raycaster(), ptr=new THREE.Vector2();
+renderer.domElement.addEventListener('pointermove',e=>{
+  const r=renderer.domElement.getBoundingClientRect();
+  ptr.set((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1);
+  ray.setFromCamera(ptr,camera);
+  const hit=ray.intersectObjects(parts.filter(p=>p.visible),false)[0];
+  if(hit){tip.textContent=hit.object.userData.label;tip.style.left=(e.clientX-r.left)+'px';tip.style.top=(e.clientY-r.top)+'px';tip.style.opacity=1}
+  else tip.style.opacity=0;
+});
+renderer.domElement.addEventListener('pointerleave',()=>tip.style.opacity=0);
+
+function resize(){const w=stage.clientWidth,h=stage.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}
+new ResizeObserver(resize).observe(stage); resize();
+document.getElementById('loading').remove();
+
+renderer.setAnimationLoop(()=>{
+  explode+=(explodeTarget-explode)*0.12;
+  qR.position.x=HALF+explode*40; qL.position.x=-HALF-explode*40;
+  controls.update(); renderer.render(scene,camera);
+});
+
+// Tema: siempre abre en claro; oscuro solo con el botón
+const themeBtn=document.getElementById('themeBtn');
+themeBtn.onclick=()=>{
+  const dark=document.documentElement.dataset.theme!=='dark';
+  document.documentElement.dataset.theme=dark?'dark':'light';
+  themeBtn.textContent=dark?'☀':'☾';
+  themeBtn.setAttribute('aria-label',dark?'Cambiar a modo claro':'Cambiar a modo oscuro');
+  ACC.set(css('--acc')); applyTheme(); setStep(current);
+};
+</script>
+</body>
+</html>
